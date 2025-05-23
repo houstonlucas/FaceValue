@@ -21,6 +21,10 @@ python -m venv .venv
 source .venv/bin/activate   # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 
+# Apply database migrations and start the development server
+python manage.py migrate
+python manage.py runserver
+
 # TODO: add more about setup when that is more defined
 ```
 

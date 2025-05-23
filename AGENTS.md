@@ -10,4 +10,10 @@
   - Design decisions should take this into account
 
 ### Current Tasks
-- Add basic test suite (unit tests for models/views)
+- All current tasks have been completed!
+
+### Suggested Next Tasks
+- Implement user authentication (signup, login, logout)
+- Define initial data models for face analysis metrics
+- Create basic UI templates and static asset pipeline
+- Set up CI pipeline (GitHub Actions) for tests and linting
