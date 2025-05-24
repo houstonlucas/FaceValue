@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Registered Users</h1>
+<ul>
+  {% for u in users %}
+    <li>{{ u.username }}{% if u.email %} ({{ u.email }}){% endif %}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

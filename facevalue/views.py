@@ -1,10 +1,7 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def home(request):
     """
-    Simple homepage view to verify the site is running.
+    Render homepage using template extending base layout.
     """
-    return HttpResponse(
-        "<h1>Face Value</h1><p>The site is up and running!</p>",
-        content_type="text/html",
-    )
+    return render(request, 'home.html')
