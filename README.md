@@ -9,10 +9,12 @@ This project aims to:
 - Enable registered users to submit ratings and written reviews.
 - Support searching reviews by attributes (brand, type, rating, user).
 
-### Technology stack
-- Python 3.x
-- Django
-- SQLite (Development; configurable for PostgreSQL in production)
+## Current Features
+- Homepage with base template and navigation bar.
+- User authentication (signup, login, logout) via the accounts app.
+- User listing page displaying all registered users.
+- Unit tests covering signup, login, and homepage views.
+- Basic UI templates and static assets pipeline configured.
 
 ## Setup (local development)
 
@@ -30,6 +32,9 @@ python manage.py runserver
 
 - Visit http://127.0.0.1:8000/ to browse puzzles and reviews.
 - Visit http://127.0.0.1:8000/admin/ to manage puzzles and users.
+- Visit http://127.0.0.1:8000/accounts/signup/ to create a new user account.
+- Visit http://127.0.0.1:8000/accounts/login/ to log in.
+- Use the logout link in the site navigation to log out.
 
 ## AGENTS.md
 There is an AGENTS.md file which contains additional instructions and information that agents should consider and maintain

@@ -10,10 +10,13 @@
   - Design decisions should take this into account
 
 ### Current Tasks
-- All current tasks have been completed!
-
-### Suggested Next Tasks
 - Implement user authentication (signup, login, logout)
 - Define initial data models for face analysis metrics
 - Create basic UI templates and static asset pipeline
-- Set up CI pipeline (GitHub Actions) for tests and linting
+
+### Suggested Next Tasks
+- Integrate puzzle rating models (Puzzle, Rating, Review) into the database
+- Implement CRUD views for puzzles and reviews
+- Add search functionality for puzzles by brand and type
+- Configure PostgreSQL for production environment
+- Set up GitHub Actions CI pipeline for tests and linting
