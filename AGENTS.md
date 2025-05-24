@@ -10,9 +10,7 @@
   - Design decisions should take this into account
 
 ### Current Tasks
-- Implement user authentication (signup, login, logout)
 - Define initial data models for face analysis metrics
-- Create basic UI templates and static asset pipeline
 
 ### Suggested Next Tasks
 - Integrate puzzle rating models (Puzzle, Rating, Review) into the database
