@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Puzzle Management</h1>
+<a href="{% url 'puzzle_create' %}">Add New Puzzle</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for puzzle in puzzles %}
+        <tr>
+            <td>{{ puzzle.name }}</td>
+            <td>{{ puzzle.brand }}</td>
+            <td>{{ puzzle.type }}</td>
+            <td>
+                <a href="{% url 'puzzle_update' puzzle.id %}">Edit</a>
+                <a href="{% url 'puzzle_delete' puzzle.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

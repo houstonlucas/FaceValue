@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home
+from .views import home, PuzzleManagementView, PuzzleCreateView, PuzzleUpdateView, PuzzleDeleteView
 
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path('puzzles/', PuzzleManagementView.as_view(), name='puzzle_management'),
+    path('puzzles/add/', PuzzleCreateView.as_view(), name='puzzle_create'),
+    path('puzzles/<int:pk>/edit/', PuzzleUpdateView.as_view(), name='puzzle_update'),
+    path('puzzles/<int:pk>/delete/', PuzzleDeleteView.as_view(), name='puzzle_delete'),
 ]

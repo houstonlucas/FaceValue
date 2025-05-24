@@ -10,11 +10,9 @@
   - Design decisions should take this into account
 
 ### Current Tasks
-- Define initial data models for face analysis metrics
-
-### Suggested Next Tasks
-- Integrate puzzle rating models (Puzzle, Rating, Review) into the database
+- Integrate puzzle rating models (Puzzle, Review) into the database
 - Implement CRUD views for puzzles and reviews
 - Add search functionality for puzzles by brand and type
 - Configure PostgreSQL for production environment
 - Set up GitHub Actions CI pipeline for tests and linting
+- Plan and implement user roles and permissions (Admin, Moderator, Normie(?) (Names to be refined later as well)) with appropriate access levels and group-based permissions.

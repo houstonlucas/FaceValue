@@ -1,9 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Registered Users</h1>
-<ul>
-  {% for u in users %}
-    <li>{{ u.username }}{% if u.email %} ({{ u.email }}){% endif %}</li>
-  {% endfor %}
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Roles</th>
+      <th>Joined</th>
+      <th>Last login</th>
+      {% if is_superadmin %}<th>Actions</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.username }}</td>
+      <td>{{ u.email|default:"—" }}</td>
+      <td>{{ u.highest_role }}</td>
+      <td>{{ u.date_joined|date:"Y-m-d H:i" }}</td>
+      <td>{{ u.last_login|date:"Y-m-d H:i"|default:"Never" }}</td>
+      {% if is_superadmin %}
+      <td>
+        {% if u != request.user %}
+          {% if u.highest_role == 'Admin' %}
+            <button onclick='location.href="{% url "demote_from_admin" u.id %}"'>Demote to User</button>
+          {% else %}
+            <button onclick='location.href="{% url "promote_to_admin" u.id %}"'>Promote to Admin</button>
+          {% endif %}
+          <button onclick='location.href="{% url "delete_user" u.id %}"'>Delete</button>
+        {% endif %}
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

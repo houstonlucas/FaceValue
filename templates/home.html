@@ -2,4 +2,7 @@
 {% block content %}
 <h1>Face Value</h1>
 <p>The site is up and running!</p>
+{% if user.is_authenticated %}
+<a href="{% url 'puzzle_management' %}">Manage Puzzles</a>
+{% endif %}
 {% endblock %}
