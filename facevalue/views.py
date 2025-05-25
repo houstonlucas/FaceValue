@@ -22,6 +22,25 @@ class PuzzleManagementView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def test_func(self):
         return self.request.user.is_staff
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from django.utils import timezone
+        from datetime import timedelta
+        from .models import Review
+
+        # Total reviews across all puzzles
+        context['total_reviews'] = Review.objects.count()
+
+        # Active reviewers in last 24 hours
+        active_window = timezone.now() - timedelta(hours=24)
+        context['active_reviewers'] = (
+            Review.objects.filter(created_at__gte=active_window)
+                          .values('user')
+                          .distinct()
+                          .count()
+        )
+        return context
+
 class PuzzleCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Puzzle
     form_class = PuzzleForm
@@ -214,7 +233,8 @@ class ReviewListView(LoginRequiredMixin, ListView):
             if data.get('rating'):
                 qs = qs.filter(rating=data['rating'])
             if data.get('user'):
-                qs = qs.filter(user=data['user'])
+                # Fuzzy match on username
+                qs = qs.filter(user__username__icontains=data['user'])
         return qs
 
     def get_context_data(self, **kwargs):

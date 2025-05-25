@@ -75,8 +75,11 @@ class ReviewFilterForm(BootstrapFormMixin, forms.Form):
         choices=[('', 'All Ratings')] + [(str(i), f'{i} Stars') for i in range(1, 6)],
         required=False
     )
-    user = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+    user = forms.CharField(
         required=False,
-        empty_label='All Users'
+        label='User',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Filter by username'
+        })
     )
