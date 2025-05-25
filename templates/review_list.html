@@ -91,7 +91,7 @@
                     </td>
                     <td>
                         <small>{{ review.created_at|date:"M d, Y" }}</small>
-                        {% if review.updated_at and review.updated_at != review.created_at %}
+                        {% if review.was_edited %}
                             <br><span class="badge bg-warning text-dark">edited</span>
                         {% endif %}
                     </td>

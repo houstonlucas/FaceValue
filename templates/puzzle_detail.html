@@ -56,7 +56,7 @@
                             </div>
                             <small class="text-muted">
                                 {{ review.created_at|date:"M d, Y" }}
-                                {% if review.updated_at and review.updated_at != review.created_at %}
+                                {% if review.was_edited %}
                                     <span class="badge bg-warning text-dark ms-1">edited</span>
                                 {% endif %}
                             </small>

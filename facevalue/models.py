@@ -49,6 +49,14 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def was_edited(self):
+        """Check if review was actually edited (more than 10 seconds after creation)"""
+        if not self.updated_at or not self.created_at:
+            return False
+        time_diff = (self.updated_at - self.created_at).total_seconds()
+        return time_diff > 10
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['puzzle', 'user'], name='one_review_per_user')
