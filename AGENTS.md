@@ -10,8 +10,6 @@
   - Design decisions should take this into account
 
 ### Current Tasks
-- Integrate puzzle rating models (Puzzle, Review) into the database
-- Implement CRUD views for puzzles and reviews
 - Add search functionality for puzzles by brand and type
 - Configure PostgreSQL for production environment
 - Set up GitHub Actions CI pipeline for tests and linting
