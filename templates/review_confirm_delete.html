@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Delete Review</h1>
+<p>Are you sure you want to delete your review of "{{ object.puzzle.name }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Confirm Delete</button>
+</form>
+<a href="{% url 'puzzle_detail' slug=object.puzzle.slug %}">Cancel</a>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{% if puzzle %}Review {{ puzzle.name }}{% else %}Create New Review{% endif %}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  
+  {% if not puzzle %}
+  <div class="form-group">
+    <label for="id_puzzle">Choose a Puzzle:</label>
+    {{ form.puzzle }}
+  </div>
+  {% endif %}
+  
+  {{ form.rating.label_tag }}
+  {{ form.rating }}
+  
+  {{ form.comment.label_tag }}
+  {{ form.comment }}
+  
+  <button type="submit">Submit Review</button>
+</form>
+
+<a href="{% if puzzle %}{% url 'puzzle_detail' puzzle.slug %}{% else %}{% url 'review_list' %}{% endif %}">Cancel</a>
+{% endblock %}

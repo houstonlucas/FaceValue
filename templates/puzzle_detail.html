@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ puzzle.name }}</h1>
+<p><strong>Brand:</strong> {{ puzzle.brand }} &bull; <strong>Type:</strong> {{ puzzle.type }}</p>
+<p><strong>Average Rating:</strong> {{ puzzle.avg_rating|floatformat:1 }} ({{ puzzle.review_count }} reviews)</p>
+<p><strong>Tags:</strong> {% for tag in puzzle.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</p>
+
+{% if comments_debug %}
+<div style="background-color: #f5f5f5; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; display: none;">
+  <p><strong>Debug - Comments:</strong></p>
+  <ul>
+    {% for id, data in comments_debug.items %}
+      <li>Comment #{{ id }}: parent={{ data.parent_id }}, review={{ data.review_id }}, replies={{ data.reply_count }}, content="{{data.content}}"</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if user.is_authenticated %}
+  <p><a class="btn" href="{% url 'review_add' slug=puzzle.slug %}">Leave a Review</a></p>
+{% else %}
+  <p><a href="{% url 'login' %}">Log in</a> to leave a review.</p>
+{% endif %}
+<h2>Reviews</h2>
+{% for review in puzzle.reviews.all %}
+  <div class="review">
+    <p><strong>{{ review.user.username }}</strong> rated {{ review.rating }}/5 on {{ review.created_at|date:"Y-m-d H:i" }}{% if review.updated_at and review.updated_at != review.created_at %} (edited {{ review.updated_at|date:"Y-m-d H:i" }}){% endif %}</p>
+    <p>{{ review.comment }}</p>
+    {% if user == review.user %}
+      <a href="{% url 'review_update' review.pk %}">Edit</a> |
+      <a href="{% url 'review_delete' review.pk %}">Delete</a>
+    {% endif %}
+    <div class="comments" style="margin-left:20px;">
+      <h4>Comments:</h4>
+      {% if review.top_level_comments %}
+        {% for comment in review.top_level_comments %}
+          {% include 'comment.html' with comment=comment %}
+        {% endfor %}
+      {% else %}
+        <p>No comments.</p>
+      {% endif %}
+      <p><a href="{% url 'comment_add' review_pk=review.pk %}">Add comment</a></p>
+    </div>
+  </div>
+  <hr />
+{% empty %}
+  <p>No reviews yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated and not user_has_reviewed %}
+<h2>Leave a Review</h2>
+<form method="post" action="{% url 'review_add' puzzle.slug %}">
+  {% csrf_token %}
+  {{ review_form.as_p }}
+  <button type="submit">Submit Review</button>
+</form>
+{% endif %}
+{% endblock %}

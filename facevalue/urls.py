@@ -16,7 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, PuzzleManagementView, PuzzleCreateView, PuzzleUpdateView, PuzzleDeleteView
+from .views import (
+    home,
+    PuzzleManagementView,
+    PuzzleCreateView,
+    PuzzleUpdateView,
+    PuzzleDeleteView,
+    PuzzleDetailView,
+    ReviewCreateView,
+    ReviewUpdateView,
+    ReviewDeleteView,
+    CommentCreateView,
+    CommentUpdateView,
+    CommentDeleteView,
+    ReviewListView,
+)
 
 urlpatterns = [
     path('', home, name='home'),
@@ -26,4 +40,15 @@ urlpatterns = [
     path('puzzles/add/', PuzzleCreateView.as_view(), name='puzzle_create'),
     path('puzzles/<int:pk>/edit/', PuzzleUpdateView.as_view(), name='puzzle_update'),
     path('puzzles/<int:pk>/delete/', PuzzleDeleteView.as_view(), name='puzzle_delete'),
+    # Puzzle detail & review/comment actions
+    path('puzzles/<slug:slug>/', PuzzleDetailView.as_view(), name='puzzle_detail'),
+    path('puzzles/<slug:slug>/review/add/', ReviewCreateView.as_view(), name='review_add'),
+    path('review/<int:pk>/edit/', ReviewUpdateView.as_view(), name='review_update'),
+    path('review/<int:pk>/delete/', ReviewDeleteView.as_view(), name='review_delete'),
+    path('review/<int:review_pk>/comment/add/', CommentCreateView.as_view(), name='comment_add'),
+    path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='comment_update'),
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
+    # Reviews list page
+    path('reviews/', ReviewListView.as_view(), name='review_list'),
+    path('reviews/add/', ReviewCreateView.as_view(), name='review_create'),
 ]

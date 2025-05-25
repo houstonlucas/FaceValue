@@ -24,6 +24,7 @@ source .venv/bin/activate   # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 
 # Apply database migrations and start the development server
+python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 
@@ -35,6 +36,15 @@ python manage.py runserver
 - Visit http://127.0.0.1:8000/accounts/signup/ to create a new user account.
 - Visit http://127.0.0.1:8000/accounts/login/ to log in.
 - Use the logout link in the site navigation to log out.
+
+## New Features
+- Slug fields for puzzles for SEO-friendly URLs.
+- Puzzle tagging support with a `Tag` model.
+- Automatic aggregate fields (`avg_rating`, `review_count`) on puzzles.
+- Rating restricted to 1–5 with choices and validators.
+- Nested (threaded) comments with parent-child relations.
+- `updated_at` timestamps on reviews and comments.
+- One review per user constraint enforced at the database level.
 
 ## AGENTS.md
 There is an AGENTS.md file which contains additional instructions and information that agents should consider and maintain

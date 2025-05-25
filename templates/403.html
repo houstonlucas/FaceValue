@@ -8,5 +8,6 @@
   <h1>403 – Permission Denied</h1>
   <p>You must be logged in to view this page.</p>
   <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a></p>
+  <p><a href="{% url 'home' %}">Home</a></p>
 </body>
 </html>

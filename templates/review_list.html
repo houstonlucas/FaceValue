@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Reviews</h1>
+
+<div style="margin-bottom: 20px;">
+  <a href="{% url 'review_create' %}">Add New Review</a>
+</div>
+
+<form method="get">
+  {{ filter_form.as_p }}
+  <button type="submit">Filter</button>
+  <a href="{% url 'review_list' %}">Clear</a>
+</form>
+<table>
+  <thead>
+    <tr>
+      <th>Puzzle</th>
+      <th>User</th>
+      <th>Rating</th>
+      <th>Comment</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in reviews %}
+    <tr>
+      <td><a href="{% url 'puzzle_detail' review.puzzle.slug %}">{{ review.puzzle.name }}</a></td>
+      <td>{{ review.user.username }}</td>
+      <td>{{ review.rating }}</td>
+      <td>{{ review.comment|truncatewords:20 }}</td>
+      <td>{{ review.created_at|date:"Y-m-d" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No reviews found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -8,8 +8,12 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Slug</th>
             <th>Brand</th>
             <th>Type</th>
+            <th>Avg Rating</th>
+            <th>Review Count</th>
+            <th>Tags</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,10 +21,15 @@
         {% for puzzle in puzzles %}
         <tr>
             <td>{{ puzzle.name }}</td>
+            <td>{{ puzzle.slug }}</td>
             <td>{{ puzzle.brand }}</td>
             <td>{{ puzzle.type }}</td>
+            <td>{{ puzzle.avg_rating|floatformat:2 }}</td>
+            <td>{{ puzzle.review_count }}</td>
+            <td>{% for tag in puzzle.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</td>
             <td>
-                <a href="{% url 'puzzle_update' puzzle.id %}">Edit</a>
+                <a href="{% url 'puzzle_detail' slug=puzzle.slug %}">View</a> |
+                <a href="{% url 'puzzle_update' puzzle.id %}">Edit</a> |
                 <a href="{% url 'puzzle_delete' puzzle.id %}">Delete</a>
             </td>
         </tr>

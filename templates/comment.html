@@ -1,0 +1,25 @@
+<div class="comment" id="comment-{{ comment.id }}">
+  <p><strong>{{ comment.user.username }}</strong> on {{ comment.created_at|date:"Y-m-d H:i" }}{% if comment.updated_at and comment.updated_at != comment.created_at %} (edited {{ comment.updated_at|date:"Y-m-d H:i" }}){% endif %}</p>
+  <p>{{ comment.content }}</p>
+  {% if user == comment.user %}
+    <a href="{% url 'comment_update' comment.pk %}">Edit</a> |
+    <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+  {% endif %}
+  <p><a href="{% url 'comment_add' review_pk=comment.review.pk %}?parent={{ comment.pk }}">Reply</a></p>
+  
+  {% if comment.replies.count > 0 %}
+    <div class="replies" style="margin-left:20px; border-left: 2px solid #ccc; padding-left: 10px;">
+      <p><strong>Replies:</strong></p>
+      {% for reply in comment.replies.all %}
+        <div class="reply" style="margin-bottom: 10px;" id="reply-{{ reply.id }}">
+          <p><strong>{{ reply.user.username }}</strong> replied on {{ reply.created_at|date:"Y-m-d H:i" }}</p>
+          <p>{{ reply.content }}</p>
+          {% if user == reply.user %}
+            <a href="{% url 'comment_update' reply.pk %}">Edit</a> |
+            <a href="{% url 'comment_delete' reply.pk %}">Delete</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
