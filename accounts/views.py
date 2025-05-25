@@ -7,6 +7,8 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import CustomUserCreationForm
+from django.utils import timezone
+from datetime import timedelta
 
 
 def signup(request):
@@ -45,6 +47,22 @@ class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
                 u.highest_role = 'User'
             else:
                 u.highest_role = 'None'
+
+        # Admin count (SuperAdmin and Admin)
+        admin_count = sum(1 for u in users if u.highest_role in ['SuperAdmin', 'Admin'])
+        context['admin_count'] = admin_count
+
+        # Recent joins in last 24 hours
+        now = timezone.now()
+        recent_window = now - timedelta(hours=24)
+        recent_users = User.objects.filter(date_joined__gte=recent_window).count()
+        context['recent_users'] = recent_users
+
+        # Active users in last 3 hours
+        active_window = now - timedelta(hours=3)
+        active_users = User.objects.filter(last_login__gte=active_window).count()
+        context['active_users'] = active_users
+
         context['is_superadmin'] = (
             self.request.user.is_superuser or
             self.request.user.groups.filter(name='SuperAdmin').exists()
