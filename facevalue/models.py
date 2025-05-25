@@ -5,6 +5,7 @@ from django.db.models import Avg, Count
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.urls import reverse  # added for get_absolute_url
 
 # Tag model for categorizing puzzles
 class Tag(models.Model):
@@ -26,6 +27,13 @@ class Puzzle(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        # Ensure slug is set and return detail URL
+        if not self.slug:
+            self.slug = slugify(self.name)
+            super().save(update_fields=['slug'])
+        return reverse('puzzle_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name
@@ -68,6 +76,14 @@ class Comment(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def was_edited(self):
+        """Check if comment was actually edited (more than 10 seconds after creation)"""
+        if not self.updated_at or not self.created_at:
+            return False
+        time_diff = (self.updated_at - self.created_at).total_seconds()
+        return time_diff > 10  # Consider edited if more than 10 seconds difference
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.review}"

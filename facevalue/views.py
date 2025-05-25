@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
+from django.utils.text import slugify
 from django import forms
 from django.db.models import Prefetch
 from .models import Puzzle, Review, Comment
@@ -168,8 +169,20 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         return self.request.user == self.get_object().user
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        review = self.object.review
+        puzzle = review.puzzle
+        context['review'] = review
+        return context
+
     def get_success_url(self):
-        return reverse('puzzle_detail', kwargs={'slug': self.object.review.puzzle.slug})
+        puzzle = self.object.review.puzzle
+        if not puzzle.slug:
+            # Regenerate slug if missing
+            puzzle.slug = slugify(puzzle.name)
+            puzzle.save()
+        return reverse('puzzle_detail', kwargs={'slug': puzzle.slug})
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
