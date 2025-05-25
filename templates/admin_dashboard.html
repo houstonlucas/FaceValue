@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Admin Dashboard</h1>
+</div>
+<div class="row mb-5">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Total Users</h5>
+        <p class="card-text display-4">{{ total_users }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Total Puzzles</h5>
+        <p class="card-text display-4">{{ total_puzzles }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-info mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Total Reviews</h5>
+        <p class="card-text display-4">{{ total_reviews }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning mb-3">
+      <div class="card-body text-dark">
+        <h5 class="card-title">Admin Users</h5>
+        <p class="card-text display-4">{{ admin_users }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<h2 class="mb-3">Admin Activity Pages</h2>
+<div class="list-group">
+  <a href="{% url 'user_list' %}" class="list-group-item list-group-item-action">
+    <i class="fas fa-users me-2"></i>Manage Users
+  </a>
+  <a href="{% url 'puzzle_management' %}" class="list-group-item list-group-item-action">
+    <i class="fas fa-puzzle-piece me-2"></i>Manage Puzzles
+  </a>
+  <a href="{% url 'review_list' %}" class="list-group-item list-group-item-action">
+    <i class="fas fa-star me-2"></i>Manage Reviews
+  </a>
+  <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">
+    <i class="fas fa-cogs me-2"></i>Django Admin Site
+  </a>
+</div>
+{% endblock %}

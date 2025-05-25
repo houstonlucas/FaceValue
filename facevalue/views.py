@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
@@ -240,4 +240,21 @@ class ReviewListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter_form'] = ReviewFilterForm(self.request.GET)
+        return context
+
+class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    template_name = 'admin_dashboard.html'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from .models import Puzzle, Review
+        from django.contrib.auth.models import User
+
+        context['total_puzzles'] = Puzzle.objects.count()
+        context['total_reviews'] = Review.objects.count()
+        context['total_users'] = User.objects.count()
+        context['admin_users'] = User.objects.filter(is_staff=True).count()
         return context

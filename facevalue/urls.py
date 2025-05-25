@@ -30,11 +30,13 @@ from .views import (
     CommentUpdateView,
     CommentDeleteView,
     ReviewListView,
+    AdminDashboardView,
 )
 
 urlpatterns = [
     path('', home, name='home'),
-    path('admin/', admin.site.urls),
+    path('admin/', AdminDashboardView.as_view(), name='admin_dashboard'),
+    path('admin/django/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('puzzles/', PuzzleManagementView.as_view(), name='puzzle_management'),
     path('puzzles/add/', PuzzleCreateView.as_view(), name='puzzle_create'),

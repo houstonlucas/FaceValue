@@ -10,7 +10,6 @@
   - Design decisions should take this into account
 
 ### Current Tasks
-- Add search functionality for puzzles by brand and type
 - Configure PostgreSQL for production environment
 - Set up GitHub Actions CI pipeline for tests and linting
 - Plan and implement user roles and permissions (Admin, Moderator, Normie(?) (Names to be refined later as well)) with appropriate access levels and group-based permissions.
