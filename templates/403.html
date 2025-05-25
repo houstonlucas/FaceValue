@@ -1,13 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Permission Denied</title>
-</head>
-<body>
-  <h1>403 – Permission Denied</h1>
-  <p>You must be logged in to view this page.</p>
-  <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a></p>
-  <p><a href="{% url 'home' %}">Home</a></p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">
+                    <i class="fas fa-lock me-2"></i>403 – Permission Denied
+                </h3>
+            </div>
+            <div class="card-body text-center">
+                <i class="fas fa-shield-alt fa-4x text-warning mb-4"></i>
+                <h4 class="mb-3">Access Restricted</h4>
+                <p class="text-muted mb-4">You don't have permission to view this page. Please log in with an account that has the required permissions.</p>
+                
+                <div class="d-grid gap-2">
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-1"></i>Log In
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-1"></i>Go Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

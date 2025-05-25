@@ -1,11 +1,102 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Face Value</h1>
-<p>The site is up and running!</p>
-{% if user.is_authenticated %}
-    {% if user.is_staff %}
-    <a href="{% url 'puzzle_management' %}">Manage Puzzles</a>
-    {% endif %}
-    <a href="{% url 'review_list' %}">Reviews</a>
-{% endif %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">
+                <i class="fas fa-cube me-3"></i>Face Value
+            </h1>
+            <p class="lead">Discover, rate, and review your favorite twisty puzzles</p>
+            <p class="mb-4">Join our community of puzzle enthusiasts and share your experiences with the latest cubes, pyraminxes, and more!</p>
+            {% if not user.is_authenticated %}
+                <a class="btn btn-light btn-lg" href="{% url 'signup' %}" role="button">
+                    <i class="fas fa-rocket me-2"></i>Get Started
+                </a>
+            {% endif %}
+        </div>
+        
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title">Latest Reviews</h5>
+                            <p class="card-text">Check out what the community is saying about the newest puzzles.</p>
+                            <a href="{% url 'review_list' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i>Browse Reviews
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if user.is_staff %}
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <i class="fas fa-cogs fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Puzzle Management</h5>
+                            <p class="card-text">Add new puzzles and manage the puzzle database.</p>
+                            <a href="{% url 'puzzle_management' %}" class="btn btn-outline-info">
+                                <i class="fas fa-plus me-1"></i>Manage Puzzles
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if user.is_authenticated %}
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'review_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-1"></i>Browse All Reviews
+                        </a>
+                        <a href="{% url 'user_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-users me-1"></i>View Community
+                        </a>
+                        {% if user.is_staff %}
+                            <a href="{% url 'puzzle_management' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-cog me-1"></i>Admin Panel
+                            </a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="text-center">
+                        <i class="fas fa-user-plus fa-2x text-muted mb-3"></i>
+                        <p>Sign up to start reviewing puzzles and join our community!</p>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'signup' %}" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-1"></i>Sign Up
+                            </a>
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-in-alt me-1"></i>Login
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Did You Know?
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted">The Rubik's Cube was invented in 1974 by Hungarian sculptor Ernő Rubik and has since become the world's best-selling puzzle toy!</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -12,6 +12,13 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+# Static files (collected by collectstatic)
+staticfiles/
+static_collected/
+
+# Media files (user uploads)
+media/
+
 # Pytest cache
 .pytest_cache/
 
@@ -25,3 +32,20 @@ db.sqlite3-journal
 
 # macOS
 .DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

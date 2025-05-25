@@ -1,11 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Confirm Delete</h1>
-<p>Are you sure you want to delete "{{ object.name }}"?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, delete</button>
-    <a href="{% url 'puzzle_management' %}">Cancel</a>
-</form>
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-warning me-2"></i>
+                    <strong>Warning:</strong> This action cannot be undone.
+                </div>
+                
+                <p class="mb-3">Are you sure you want to delete the puzzle:</p>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-cube me-2"></i>{{ object.name }}
+                        </h5>
+                        <p class="card-text">
+                            <span class="badge bg-secondary me-1">{{ object.brand }}</span>
+                            <span class="badge bg-info">{{ object.type }}</span>
+                        </p>
+                        {% if object.review_count > 0 %}
+                            <div class="alert alert-danger">
+                                <i class="fas fa-info-circle me-1"></i>
+                                This puzzle has {{ object.review_count }} review{{ object.review_count|pluralize }} that will also be deleted.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'puzzle_management' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-1"></i>Yes, Delete Puzzle
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

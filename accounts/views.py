@@ -6,17 +6,18 @@ from django.contrib.auth.models import User, Group
 from django.core.exceptions import PermissionDenied
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
+from .forms import CustomUserCreationForm
 
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'accounts/signup.html', {'form': form})
 
 

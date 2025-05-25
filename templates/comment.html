@@ -1,25 +1,62 @@
-<div class="comment" id="comment-{{ comment.id }}">
-  <p><strong>{{ comment.user.username }}</strong> on {{ comment.created_at|date:"Y-m-d H:i" }}{% if comment.updated_at and comment.updated_at != comment.created_at %} (edited {{ comment.updated_at|date:"Y-m-d H:i" }}){% endif %}</p>
-  <p>{{ comment.content }}</p>
-  {% if user == comment.user %}
-    <a href="{% url 'comment_update' comment.pk %}">Edit</a> |
-    <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
-  {% endif %}
-  <p><a href="{% url 'comment_add' review_pk=comment.review.pk %}?parent={{ comment.pk }}">Reply</a></p>
-  
-  {% if comment.replies.count > 0 %}
-    <div class="replies" style="margin-left:20px; border-left: 2px solid #ccc; padding-left: 10px;">
-      <p><strong>Replies:</strong></p>
-      {% for reply in comment.replies.all %}
-        <div class="reply" style="margin-bottom: 10px;" id="reply-{{ reply.id }}">
-          <p><strong>{{ reply.user.username }}</strong> replied on {{ reply.created_at|date:"Y-m-d H:i" }}</p>
-          <p>{{ reply.content }}</p>
-          {% if user == reply.user %}
-            <a href="{% url 'comment_update' reply.pk %}">Edit</a> |
-            <a href="{% url 'comment_delete' reply.pk %}">Delete</a>
-          {% endif %}
+<div class="comment border-start border-3 border-primary ps-3 mb-3" id="comment-{{ comment.id }}">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+            <strong>
+                <i class="fas fa-user me-1"></i>{{ comment.user.username }}
+            </strong>
+            <small class="text-muted ms-2">
+                {{ comment.created_at|date:"M d, Y H:i" }}
+                {% if comment.updated_at and comment.updated_at != comment.created_at %}
+                    <span class="badge bg-warning text-dark ms-1">edited</span>
+                {% endif %}
+            </small>
         </div>
-      {% endfor %}
+        {% if user == comment.user %}
+            <div class="btn-group btn-group-sm">
+                <a href="{% url 'comment_update' comment.pk %}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        {% endif %}
     </div>
-  {% endif %}
+    
+    <p class="mb-2">{{ comment.content }}</p>
+    
+    <a href="{% url 'comment_add' review_pk=comment.review.pk %}?parent={{ comment.pk }}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-reply me-1"></i>Reply
+    </a>
+    
+    {% if comment.replies.count > 0 %}
+        <div class="replies mt-3 ms-4">
+            <h6 class="text-muted">
+                <i class="fas fa-comments me-1"></i>Replies ({{ comment.replies.count }})
+            </h6>
+            {% for reply in comment.replies.all %}
+                <div class="reply border-start border-2 border-secondary ps-3 mb-2" id="reply-{{ reply.id }}">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <div>
+                            <strong class="small">
+                                <i class="fas fa-user me-1"></i>{{ reply.user.username }}
+                            </strong>
+                            <small class="text-muted ms-2">{{ reply.created_at|date:"M d, Y H:i" }}</small>
+                        </div>
+                        {% if user == reply.user %}
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'comment_update' reply.pk %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'comment_delete' reply.pk %}" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <p class="small mb-0">{{ reply.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>

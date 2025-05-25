@@ -1,39 +1,117 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Puzzle Management</h1>
-<a href="{% url 'puzzle_create' %}">Add New Puzzle</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-cogs me-2"></i>Puzzle Management
+    </h1>
+    <a href="{% url 'puzzle_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i>Add New Puzzle
+    </a>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Slug</th>
-            <th>Brand</th>
-            <th>Type</th>
-            <th>Avg Rating</th>
-            <th>Review Count</th>
-            <th>Tags</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for puzzle in puzzles %}
-        <tr>
-            <td>{{ puzzle.name }}</td>
-            <td>{{ puzzle.slug }}</td>
-            <td>{{ puzzle.brand }}</td>
-            <td>{{ puzzle.type }}</td>
-            <td>{{ puzzle.avg_rating|floatformat:2 }}</td>
-            <td>{{ puzzle.review_count }}</td>
-            <td>{% for tag in puzzle.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</td>
-            <td>
-                <a href="{% url 'puzzle_detail' slug=puzzle.slug %}">View</a> |
-                <a href="{% url 'puzzle_update' puzzle.id %}">Edit</a> |
-                <a href="{% url 'puzzle_delete' puzzle.id %}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            <i class="fas fa-table me-2"></i>All Puzzles
+        </h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Type</th>
+                    <th>Rating</th>
+                    <th>Reviews</th>
+                    <th>Tags</th>
+                    <th width="200">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for puzzle in puzzles %}
+                <tr>
+                    <td>
+                        <strong>{{ puzzle.name }}</strong>
+                        <br>
+                        <small class="text-muted">{{ puzzle.slug }}</small>
+                    </td>
+                    <td><span class="badge bg-secondary">{{ puzzle.brand }}</span></td>
+                    <td><span class="badge bg-info">{{ puzzle.type }}</span></td>
+                    <td>
+                        <span class="rating-stars">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= puzzle.avg_rating %}★{% else %}☆{% endif %}
+                            {% endfor %}
+                        </span>
+                        <br>
+                        <small>{{ puzzle.avg_rating|floatformat:1 }}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-success">{{ puzzle.review_count }}</span>
+                    </td>
+                    <td>
+                        {% for tag in puzzle.tags.all %}
+                            <span class="badge bg-light text-dark me-1">{{ tag.name }}</span>
+                        {% empty %}
+                            <span class="text-muted">-</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="{% url 'puzzle_detail' slug=puzzle.slug %}" class="btn btn-outline-primary" title="View">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{% url 'puzzle_update' puzzle.id %}" class="btn btn-outline-secondary" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'puzzle_delete' puzzle.id %}" class="btn btn-outline-danger" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-4">
+                        <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No puzzles yet. <a href="{% url 'puzzle_create' %}">Add the first one!</a></p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-cube fa-2x mb-2"></i>
+                <h5>{{ puzzles|length }}</h5>
+                <small>Total Puzzles</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-star fa-2x mb-2"></i>
+                <h5>{{ total_reviews|default:0 }}</h5>
+                <small>Total Reviews</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-2"></i>
+                <h5>{{ active_reviewers|default:0 }}</h5>
+                <small>Active Reviewers</small>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
