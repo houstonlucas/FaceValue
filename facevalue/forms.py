@@ -62,12 +62,9 @@ class ReviewFilterForm(BootstrapFormMixin, forms.Form):
         required=False,
         empty_label='All Puzzles'
     )
-    brand = forms.ChoiceField(
-        choices=[('', 'All Brands')] + [(b, b) for b in Puzzle.objects.values_list('brand', flat=True).distinct()],
-        required=False
-    )
+    brand = forms.ChoiceField(choices=[('', 'All Brands')], required=False)
     tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
+        queryset=Tag.objects.none(),
         required=False,
         widget=forms.CheckboxSelectMultiple()
     )
@@ -83,3 +80,10 @@ class ReviewFilterForm(BootstrapFormMixin, forms.Form):
             'placeholder': 'Filter by username'
         })
     )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Dynamically populate brand choices and tags queryset to avoid import-time DB queries
+        brands = Puzzle.objects.values_list('brand', flat=True).distinct()
+        self.fields['brand'].choices = [('', 'All Brands')] + [(b, b) for b in brands]
+        self.fields['tags'].queryset = Tag.objects.all()
