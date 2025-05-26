@@ -23,6 +23,8 @@ RUN chmod +x /app/entrypoint.sh
 
 # Expose port and start server
 EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s \
+  CMD curl -f http://localhost:8000/healthz/ || exit 1
 
 # Entrypoint to handle migrations and collectstatic
 ENTRYPOINT ["/app/entrypoint.sh"]

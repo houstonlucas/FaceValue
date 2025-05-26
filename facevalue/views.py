@@ -7,6 +7,7 @@ from django import forms
 from django.db.models import Prefetch
 from .models import Puzzle, Review, Comment
 from .forms import PuzzleForm, ReviewForm, CommentForm, ReviewFilterForm, ReviewFormWithPuzzle
+from django.http import JsonResponse
 
 def home(request):
     """
@@ -258,3 +259,7 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['total_users'] = User.objects.count()
         context['admin_users'] = User.objects.filter(is_staff=True).count()
         return context
+
+def healthz(request):
+    """Health check endpoint"""
+    return JsonResponse({"status": "ok"})

@@ -31,10 +31,12 @@ from .views import (
     CommentDeleteView,
     ReviewListView,
     AdminDashboardView,
+    healthz,  # health-check endpoint
 )
 
 urlpatterns = [
     path('', home, name='home'),
+    path('healthz/', healthz, name='healthz'),
     path('admin/', AdminDashboardView.as_view(), name='admin_dashboard'),
     path('admin/django/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
